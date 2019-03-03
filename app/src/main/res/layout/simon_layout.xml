@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <Button
+            android:text="@string/green_button_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.greenButton"
+            android:id="@+id/greenButton" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/redButton" android:layout_marginEnd="8dp"
+            android:layout_marginTop="50dp" app:layout_constraintTop_toBottomOf="@+id/startButton"/>
+    <Button
+            android:text="@string/red_button_name"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            style="@style/AppTheme.redButton"
+            android:id="@+id/redButton" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@+id/greenButton" android:layout_marginTop="50dp"
+            app:layout_constraintTop_toBottomOf="@+id/startButton"/>
+    <Button
+            android:text="@string/yellow_button_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.yellowButton"
+            android:id="@+id/yellowButton" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/blueButton" android:layout_marginEnd="8dp"
+            android:layout_marginBottom="60dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/greenButton"/>
+    <Button
+            android:text="@string/blue_button_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.blueButton"
+            android:id="@+id/blueButton" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@+id/yellowButton" android:layout_marginBottom="60dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/redButton"/>
+    <Button
+            android:text="@string/start_button_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/startButton"
+            style="@style/AppTheme.Button"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="200dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+    />
+</androidx.constraintlayout.widget.ConstraintLayout>
