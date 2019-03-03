@@ -1,5 +1,6 @@
 package com.example.simon
 
+import android.util.Log
 import kotlin.random.Random
 
 
@@ -19,12 +20,31 @@ class SimonModel {
         return answerPosition
     }
 
+    fun checkAnswer(guess: Int){
+        if( totalListOfAnswers[userPosition] != guess ) {
+            Log.e("TAG","Incorrect answer")
+            //advanceUserPosition()
+            //return false
+        }
+        else {
+            Log.e("TAG","Correct answer")
+            advanceUserPosition()
+            //return true
+        }
+    }
+
     fun getAnswers(): List<Int> {
         return totalListOfAnswers
     }
 
-    fun advanceUserPosition() {
-        userPosition = userPosition + 1
+    private fun advanceUserPosition() {
+        if (userPosition != totalListOfAnswers.count()) {
+            userPosition++
+        }
+        else {
+            Log.e("TAG", "Reached Limit, restarting")
+            userPosition = 0
+        }
     }
 
 }

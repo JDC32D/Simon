@@ -10,14 +10,16 @@ class MainActivity : AppCompatActivity() {
 
     val simonModel = SimonModel()
 
-    private fun disableButtons() {
+    private fun disableButtonClicks() {
+        startButton.isClickable = false
         redButton.isClickable = false
         greenButton.isClickable = false
         yellowButton.isClickable = false
         blueButton.isClickable = false
     }
 
-    private fun enableButtons() {
+    private fun enableButtonClicks() {
+        startButton.isClickable = true
         redButton.isClickable = true
         greenButton.isClickable = true
         yellowButton.isClickable = true
@@ -67,26 +69,31 @@ class MainActivity : AppCompatActivity() {
         viewFragment?.listener = object : SimonViewFragment.SimonListener {
             override fun startButtonPressed() {
                 Log.e("TAG", "Delegated from the View to the Controller")
+                disableButtonClicks()
                 modelFragment?.startSequence()
-                //modelFragment?.stopSequence()
+                Log.e("TAG","Disabled button clicks")
             }
 
             override fun greenButtonPressed() {
+                simonModel.checkAnswer(0)
             }
 
             override fun redButtonPressed() {
+                simonModel.checkAnswer(1)
             }
 
             override fun yellowButtonPressed() {
+                simonModel.checkAnswer(2)
             }
 
             override fun blueButtonPressed() {
-
+                simonModel.checkAnswer(3)
             }
 
-//            override fun getNextAnswer(): Int {
-//                return simonModel.getNextAnswer()
-//            }
+            override fun sequenceComplete() {
+                enableButtonClicks()
+                Log.e("TAG", "Enable button clicks")
+            }
 
         }
         modelFragment?.listener = modelListener

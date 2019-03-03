@@ -1,5 +1,6 @@
 package com.example.simon
 
+import android.animation.AnimatorSet
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.graphics.drawable.ColorDrawable
@@ -8,6 +9,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.simon_layout.*
@@ -22,9 +26,12 @@ class SimonViewFragment: Fragment() {
         fun redButtonPressed()
         fun yellowButtonPressed()
         fun blueButtonPressed()
-        //fun getNextAnswer(): Int
+        fun sequenceComplete()
     }
     var listener: SimonListener? = null
+
+
+    var animListener: Animation.AnimationListener? = null
 
 
     //Give the fragment a view
@@ -42,25 +49,31 @@ class SimonViewFragment: Fragment() {
 
         view.greenButton.setOnClickListener {
             Log.e("TAG", "Pressed ${it}")
+            listener?.greenButtonPressed()
         }
 
         view.redButton.setOnClickListener{
             Log.e("TAG", "Pressed ${it}")
+            listener?.redButtonPressed()
         }
 
         view.yellowButton.setOnClickListener {
             Log.e("TAG", "Pressed ${it}")
+            listener?.yellowButtonPressed()
         }
 
         view.blueButton.setOnClickListener {
             Log.e("TAG", "Pressed ${it}")
+            listener?.blueButtonPressed()
         }
 
         return view
     }
 
-    //Only flashes 4 times?
+    //Would need to turn this into a AnimationSet to give listener info
     fun runUIUpdate(answers: List<Int>) {
+        val set = AnimatorSet()
+
         activity?.let { activity ->
             for (index in 0 until answers.size) {
                 val view = when(answers[index]) {
@@ -85,13 +98,48 @@ class SimonViewFragment: Fragment() {
                         view.setBackgroundColor(it)
                     }
                 }
+
                 animator.startDelay = (index * 1000).toLong()
-                animator?.start()
+                set.playSequentially(animator)
+                //animator?.start()
+
                 println(answers[index])
             }
         }
+        set.start()
+        //I want to re enable buttons here...
     }
 }
+
+//        activity?.let { activity ->
+//            for (index in 0 until answers.size) {
+//                val view = when(answers[index]) {
+//                    0 -> greenButton
+//                    1 -> redButton
+//                    2 -> yellowButton
+//                    else -> blueButton
+//                }
+//
+//                val originalColor = view.background as? ColorDrawable
+//                val flash = ContextCompat.getColor(activity, R.color.flashColor)
+//
+//                val animator = ValueAnimator.ofObject(
+//                    ArgbEvaluator(),
+//                    originalColor?.color,
+//                    flash,
+//                    originalColor?.color
+//                )
+//
+//                animator.addUpdateListener { valueAnimator ->
+//                    (valueAnimator.animatedValue as? Int)?.let {
+//                        view.setBackgroundColor(it)
+//                    }
+//                }
+//                animator.startDelay = (index * 1000).toLong()
+//                animator?.start()
+//                println(answers[index])
+//            }
+//        }
 //                val red = ContextCompat.getColor(activity, R.color.redColor)
 //                val green = ContextCompat.getColor(activity, R.color.greenColor)
 //                val blue = ContextCompat.getColor(activity, R.color.blueColor)
