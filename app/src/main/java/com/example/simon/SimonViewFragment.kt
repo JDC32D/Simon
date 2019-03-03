@@ -59,11 +59,10 @@ class SimonViewFragment: Fragment() {
         return view
     }
 
+    //Only flashes 4 times?
     fun runUIUpdate(answers: List<Int>) {
         activity?.let { activity ->
-            //for (index in 0 until 4) {
-            for (index in answers) {
-                //val view = when (index) {
+            for (index in 0 until answers.size) {
                 val view = when(answers[index]) {
                     0 -> greenButton
                     1 -> redButton
@@ -88,7 +87,7 @@ class SimonViewFragment: Fragment() {
                 }
                 animator.startDelay = (index * 1000).toLong()
                 animator?.start()
-                println(index)
+                println(answers[index])
             }
         }
     }
