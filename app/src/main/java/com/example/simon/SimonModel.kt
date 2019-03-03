@@ -7,16 +7,19 @@ import kotlin.random.Random
 class SimonModel {
 
 //    private var totalListOfAnswers = List(10) { Random.nextInt(0, 4) }
-    private var totalListOfAnswers = mutableListOf<Int>() //( Random.nextInt(0,4) )
+    private var totalListOfAnswers = ArrayList<Int>()
     private var userPosition = 0
     private var currentScore = 0
     private var highScore = 0
     private var totalDuration: Long = 0
-    var newRound = ( userPosition == totalListOfAnswers.count() )
 
     fun gameOver() {
         //getScore()
         //
+    }
+
+    fun newRound() : Boolean{
+        return userPosition == totalListOfAnswers.count()
     }
 
     fun setCurrentDuration(duration: Long) {
@@ -45,7 +48,7 @@ class SimonModel {
 
         if( totalListOfAnswers[userPosition] != guess ) { //Lose condition
             Log.e("TAG","Incorrect answer")
-            advanceUserPosition()
+            //advanceUserPosition()
             return false
         }
 
@@ -59,7 +62,7 @@ class SimonModel {
     }
 
     fun getAnswers(): List<Int> {
-        //userPosition = 0
+        userPosition = 0
         addAnswer()
         return totalListOfAnswers
     }

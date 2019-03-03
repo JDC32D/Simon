@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText( this@MainActivity, "Correct", Toast.LENGTH_SHORT).show()
         }
 
-        if ( simonModel.newRound ){
+        if ( simonModel.newRound() ){
             Log.e("TAG", "Position = answers.count()")
             disableButtonClicks()
             enableStartButton()
