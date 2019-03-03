@@ -6,6 +6,7 @@ import kotlin.random.Random
 class SimonModel {
 
     val totalListOfAnswers = List(10) { Random.nextInt(0, 4) }
+    //val totalListOfAnswers = List[3,2,1,0]
     var answerPosition = 0
     var userAnswers = List( 10 ) {}
     var userPosition = 0

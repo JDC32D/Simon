@@ -64,7 +64,7 @@ class SimonViewFragment: Fragment() {
             //for (index in 0 until 4) {
             for (index in answers) {
                 //val view = when (index) {
-                val view = when(index) {
+                val view = when(answers[index]) {
                     0 -> greenButton
                     1 -> redButton
                     2 -> yellowButton
@@ -73,10 +73,7 @@ class SimonViewFragment: Fragment() {
 
                 val originalColor = view.background as? ColorDrawable
                 val flash = ContextCompat.getColor(activity, R.color.flashColor)
-//                val red = ContextCompat.getColor(activity, R.color.redColor)
-//                val green = ContextCompat.getColor(activity, R.color.greenColor)
-//                val blue = ContextCompat.getColor(activity, R.color.blueColor)
-//                val yellow = ContextCompat.getColor(activity, R.color.yellowColor)
+
                 val animator = ValueAnimator.ofObject(
                     ArgbEvaluator(),
                     originalColor?.color,
@@ -89,10 +86,14 @@ class SimonViewFragment: Fragment() {
                         view.setBackgroundColor(it)
                     }
                 }
-                animator.startDelay = (index * 300).toLong()
+                animator.startDelay = (index * 1000).toLong()
                 animator?.start()
                 println(index)
             }
         }
     }
 }
+//                val red = ContextCompat.getColor(activity, R.color.redColor)
+//                val green = ContextCompat.getColor(activity, R.color.greenColor)
+//                val blue = ContextCompat.getColor(activity, R.color.blueColor)
+//                val yellow = ContextCompat.getColor(activity, R.color.yellowColor)
