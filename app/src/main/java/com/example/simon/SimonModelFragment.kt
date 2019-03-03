@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
+import java.time.Duration
 
 class SimonModelFragment:Fragment() {
 
@@ -14,11 +15,16 @@ class SimonModelFragment:Fragment() {
 
     private var runnable: Runnable = Runnable {
         listener?.sequenceTriggered()
-        //triggerSequence()
+        //listener?.sequenceComplete()
+    }
+
+    private var resume: Runnable = Runnable {
+        listener?.sequenceComplete()
     }
 
     interface Listener {
         fun sequenceTriggered()
+        fun sequenceComplete()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,15 +44,17 @@ class SimonModelFragment:Fragment() {
         handler?.postDelayed(runnable, 1200)
     }
 
-    fun startSequence() {
+    fun startSequence(duration: Long) {
         if(handler == null){
             handler = Handler() //"so, ill sign it"??
             handler?.postDelayed(runnable, 1200)
+            handler?.postDelayed(resume, duration+1200)
             isRunning = true
         }
         //listener?.sequenceTriggered()
         handler = null
     }
+
 
 //    override fun onPause(){
 //        super.onPause()

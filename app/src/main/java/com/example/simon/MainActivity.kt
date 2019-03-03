@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
             override fun startButtonPressed() {
                 Log.e("TAG", "Delegated from the View to the Controller")
                 disableButtonClicks()
-                modelFragment?.startSequence()
+                modelFragment?.startSequence(simonModel.getDuration())
                 Log.e("TAG","Disabled button clicks")
             }
 
@@ -95,13 +95,24 @@ class MainActivity : AppCompatActivity() {
                 Log.e("TAG", "Enable button clicks")
             }
 
+            override fun getDuration(time: Long) {
+                simonModel.setCurrentDuration(time)
+            }
+
         }
         modelFragment?.listener = modelListener
     }
+
     private val modelListener = object : SimonModelFragment.Listener {
         override fun sequenceTriggered() {
             Log.e("TAG", "Delegated from the Model to the Controller")
             viewFragment?.runUIUpdate(simonModel.getAnswers())
+
+        }
+
+        override fun sequenceComplete() {
+            Log.e("TAG", "SequenceComplete Called")
+            viewFragment?.listener?.sequenceComplete()
         }
     }
 

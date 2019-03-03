@@ -6,37 +6,52 @@ import kotlin.random.Random
 
 class SimonModel {
 
-    val totalListOfAnswers = List(10) { Random.nextInt(0, 4) }
-    //val totalListOfAnswers = List[3,2,1,0]
-    var answerPosition = 0
-    var userAnswers = List( 10 ) {}
-    var userPosition = 0
-    private set
+//    private var totalListOfAnswers = List(10) { Random.nextInt(0, 4) }
+    var totalListOfAnswers = mutableListOf<Int>() //( Random.nextInt(0,4) )
+    private var userPosition = 0
+    private var currentScore = 0
+    private var highScore = 0
+    private var totalDuration: Long = 0
 
-    fun getNextAnswer(): Int{
-        if(answerPosition == totalListOfAnswers.count()){
-            return -1
-        }
-        return answerPosition
+    fun gameOver() {
+        //getScore()
+        //
+    }
+
+    fun setCurrentDuration(duration: Long) {
+        totalDuration = duration
+    }
+
+    fun getDuration(): Long {
+        return totalDuration
+    }
+
+    fun addAnswer() {
+        totalListOfAnswers.add(Random.nextInt(0,4))
+    }
+
+    fun getNextAnswer() {
+
     }
 
     fun checkAnswer(guess: Int){
-        if( totalListOfAnswers[userPosition] != guess ) {
+        if( totalListOfAnswers[userPosition] != guess ) { //Lose condition
             Log.e("TAG","Incorrect answer")
-            //advanceUserPosition()
-            //return false
         }
         else {
             Log.e("TAG","Correct answer")
+            //addAnswer()
             advanceUserPosition()
-            //return true
         }
     }
 
     fun getAnswers(): List<Int> {
+        userPosition = 0
+        addAnswer()
         return totalListOfAnswers
     }
 
+    //Can simplify this later with (position + 1) % totalListOfAnswers.count()
     private fun advanceUserPosition() {
         if (userPosition != totalListOfAnswers.count()) {
             userPosition++
@@ -48,3 +63,9 @@ class SimonModel {
     }
 
 }
+//fun getNextAnswer(): Int{
+//        if(answerPosition == totalListOfAnswers.count()){
+//            return -1
+//        }
+//        return answerPosition
+//    }
