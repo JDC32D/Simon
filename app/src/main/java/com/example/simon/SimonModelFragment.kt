@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
-import java.time.Duration
 
 class SimonModelFragment:Fragment() {
 
@@ -15,7 +14,6 @@ class SimonModelFragment:Fragment() {
 
     private var runnable: Runnable = Runnable {
         listener?.sequenceTriggered()
-        //listener?.sequenceComplete()
     }
 
     private var resume: Runnable = Runnable {
@@ -40,9 +38,9 @@ class SimonModelFragment:Fragment() {
         Log.e("TAG", "Model was created")
     }
 
-    private fun triggerSequence() {
-        handler?.postDelayed(runnable, 1200)
-    }
+//    private fun triggerSequence() {
+//        handler?.postDelayed(runnable, 1200)
+//    }
 
     fun startSequence(duration: Long) {
         if(handler == null){
@@ -77,8 +75,9 @@ class SimonModelFragment:Fragment() {
         handler = null
     }
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        Log.e("TAG","Fragment destroyed")
-//    }
+    override fun onDestroy() {
+        stopSequence()
+        super.onDestroy()
+        Log.e("TAG","Fragment destroyed")
+    }
 }

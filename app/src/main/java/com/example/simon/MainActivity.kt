@@ -3,6 +3,7 @@ package com.example.simon
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import kotlinx.android.synthetic.main.simon_layout.*
 import kotlin.random.Random
 
@@ -11,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     val simonModel = SimonModel()
 
     private fun disableButtonClicks() {
-        startButton.isClickable = false
+        //startButton.isClickable = false
         redButton.isClickable = false
         greenButton.isClickable = false
         yellowButton.isClickable = false
@@ -19,11 +20,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun enableButtonClicks() {
-        startButton.isClickable = true
+        //startButton.isClickable = true
         redButton.isClickable = true
         greenButton.isClickable = true
         yellowButton.isClickable = true
         blueButton.isClickable = true
+    }
+
+    private fun disableStartButton() {
+        startButton.isClickable = false
+    }
+
+    private fun enableStartButton() {
+        startButton.isClickable = true
     }
 
     //Use this to attach the SimonModelFragment to the activity
@@ -69,25 +78,26 @@ class MainActivity : AppCompatActivity() {
         viewFragment?.listener = object : SimonViewFragment.SimonListener {
             override fun startButtonPressed() {
                 Log.e("TAG", "Delegated from the View to the Controller")
+                disableStartButton()
                 disableButtonClicks()
                 modelFragment?.startSequence(simonModel.getDuration())
                 Log.e("TAG","Disabled button clicks")
             }
 
             override fun greenButtonPressed() {
-                simonModel.checkAnswer(0)
+                checkAnswer(0)
             }
 
             override fun redButtonPressed() {
-                simonModel.checkAnswer(1)
+                checkAnswer(1)
             }
 
             override fun yellowButtonPressed() {
-                simonModel.checkAnswer(2)
+                checkAnswer(2)
             }
 
             override fun blueButtonPressed() {
-                simonModel.checkAnswer(3)
+               checkAnswer(3)
             }
 
             override fun sequenceComplete() {
@@ -114,6 +124,21 @@ class MainActivity : AppCompatActivity() {
             Log.e("TAG", "SequenceComplete Called")
             viewFragment?.listener?.sequenceComplete()
         }
+    }
+
+    fun checkAnswer(guess: Int) {
+
+        if ( simonModel.checkAnswer(guess) ) {
+            Toast.makeText( this@MainActivity, "Correct", Toast.LENGTH_SHORT).show()
+        }
+
+        if ( simonModel.newRound ){
+            Log.e("TAG", "Position = answers.count()")
+            disableButtonClicks()
+            enableStartButton()
+            Toast.makeText(this, "Press Start", Toast.LENGTH_LONG).show()
+        }
+
     }
 
     /*

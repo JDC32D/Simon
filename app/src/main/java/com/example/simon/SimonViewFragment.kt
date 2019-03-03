@@ -108,12 +108,11 @@ class SimonViewFragment: Fragment() {
                 println(answers[index])
             }
         }
-        //Send the total duration to my activity
+
         set.startDelay = 1000
         set.duration = 1000
         listener?.getDuration(set.totalDuration + 1000)
         set.start()
-        //I want to re enable buttons here...
     }
 }
 
