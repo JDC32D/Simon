@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
+import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -27,11 +28,12 @@ class SimonViewFragment: Fragment() {
         fun yellowButtonPressed()
         fun blueButtonPressed()
         fun sequenceComplete()
+        fun getDuration(time: Long)
     }
     var listener: SimonListener? = null
 
 
-    var animListener: Animation.AnimationListener? = null
+    //var animListener: Animation.AnimationListener? = null
 
 
     //Give the fragment a view
@@ -70,9 +72,11 @@ class SimonViewFragment: Fragment() {
         return view
     }
 
-    //Would need to turn this into a AnimationSet to give listener info
+    //Want to make a set of animators to reference them later if needed
+    val set = AnimatorSet()
+
+    //Would need to turn this into a AnimationSet to give a listener info
     fun runUIUpdate(answers: List<Int>) {
-        val set = AnimatorSet()
 
         activity?.let { activity ->
             for (index in 0 until answers.size) {
@@ -101,15 +105,19 @@ class SimonViewFragment: Fragment() {
 
                 animator.startDelay = (index * 1000).toLong()
                 set.playSequentially(animator)
-                //animator?.start()
-
                 println(answers[index])
             }
         }
+        //Send the total duration to my activity
+        set.startDelay = 1000
+        set.duration = 1000
+        listener?.getDuration(set.totalDuration + 1000)
         set.start()
         //I want to re enable buttons here...
     }
 }
+
+//References to old code go here...for now
 
 //        activity?.let { activity ->
 //            for (index in 0 until answers.size) {
