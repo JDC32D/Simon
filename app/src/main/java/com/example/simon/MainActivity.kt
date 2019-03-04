@@ -59,10 +59,27 @@ class MainActivity : AppCompatActivity() {
     //Need a reference to my view fragment
     private var viewFragment: SimonViewFragment? = null
     private var modelFragment: SimonModelFragment? = null
+    private var gameOverFragment: GameOverViewFragment? = null
+    private val transaction = supportFragmentManager.beginTransaction()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //Game over fragment is not yet commited with transaction
+        gameOverFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as? GameOverViewFragment
+        if (gameOverFragment == null)
+        {
+            gameOverFragment = GameOverViewFragment()
+        }
+
+        gameOverFragment?.listener = object : GameOverViewFragment.GameOverListener {
+
+            override fun restartButtonPressed() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        }
 
         //Set reference in the XML, so we need to search for it by ID
         viewFragment = supportFragmentManager.findFragmentById(R.id.mainContainer)as? SimonViewFragment
@@ -94,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         //viewFragment?.listener = this
         viewFragment?.listener = object : SimonViewFragment.SimonListener {
             override fun startButtonPressed() {
-                Log.e("TAG", "Delegated from the View to the Controller")
+                Log.e("TAG", "Delegated from the SimonViewFrag to the Controller")
                 disableRadioMenu()
                 disableStartButton()
                 disableButtonClicks()
@@ -120,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun sequenceComplete() {
                 enableButtonClicks()
-                Log.e("TAG", "Enable button clicks")
+                Log.e("TAG", "Enabled button clicks")
             }
 
             override fun getDuration(time: Long) {
@@ -133,11 +150,21 @@ class MainActivity : AppCompatActivity() {
 
         }
         modelFragment?.listener = modelListener
+
     }
+
+
+    private fun showGameOverScreen(){
+        transaction.replace(R.id.mainContainer, gameOverFragment!!)
+        transaction.addToBackStack("GameOver")
+        transaction.commit()
+    }
+
+
 
     private val modelListener = object : SimonModelFragment.Listener {
         override fun sequenceTriggered() {
-            Log.e("TAG", "Delegated from the Model to the Controller")
+            Log.e("TAG", "Delegated from the SimonModelFrag to the Controller")
             viewFragment?.runUIUpdate(simonModel.getAnswers())
 
         }
@@ -152,7 +179,9 @@ class MainActivity : AppCompatActivity() {
 
         if ( simonModel.checkAnswer(guess) ) {
             Toast.makeText( this@MainActivity, "Correct", Toast.LENGTH_SHORT).show()
-            viewFragment?.listener?.updateScoreText()
+            //viewFragment?.listener?.updateScoreText()
+        } else {
+            showGameOverScreen()
         }
 
         if ( simonModel.newRound() ){
@@ -163,6 +192,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun getDifficulty() {
         if(easyRadioButton.isChecked){

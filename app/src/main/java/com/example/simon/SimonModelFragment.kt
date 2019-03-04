@@ -35,7 +35,7 @@ class SimonModelFragment:Fragment() {
         This will eventually be replaced by viewModel
          */
         retainInstance = true
-        Log.e("TAG", "Model was created")
+        Log.e("TAG", "SimonModelFragment was created")
     }
 
 //    private fun triggerSequence() {
@@ -78,6 +78,6 @@ class SimonModelFragment:Fragment() {
     override fun onDestroy() {
         stopSequence()
         super.onDestroy()
-        Log.e("TAG","Fragment destroyed")
+        Log.e("TAG","SimonModelFragment destroyed")
     }
 }
