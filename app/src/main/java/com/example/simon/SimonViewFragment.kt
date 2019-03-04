@@ -29,6 +29,7 @@ class SimonViewFragment: Fragment() {
         fun blueButtonPressed()
         fun sequenceComplete()
         fun getDuration(time: Long)
+        fun updateScoreText()
     }
     var listener: SimonListener? = null
 

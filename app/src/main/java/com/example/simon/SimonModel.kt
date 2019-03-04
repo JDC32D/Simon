@@ -6,16 +6,38 @@ import kotlin.random.Random
 
 class SimonModel {
 
-//    private var totalListOfAnswers = List(10) { Random.nextInt(0, 4) }
     private var totalListOfAnswers = ArrayList<Int>()
     private var userPosition = 0
     private var currentScore = 0
     private var highScore = 0
     private var totalDuration: Long = 0
+    private var difficulty = 0
 
-    fun gameOver() {
-        //getScore()
-        //
+    fun setDifficulty(diffLevel: Int){
+        difficulty = diffLevel
+    }
+
+    private fun addAnswer() {
+        var index = 0
+        while(index < difficulty) {
+            index++
+            totalListOfAnswers.add(Random.nextInt(0, 4))
+        }
+    }
+
+    private fun incrementScore() {
+        currentScore = (currentScore + 1) * difficulty
+        if (currentScore > highScore) {
+            highScore = currentScore
+        }
+    }
+
+    fun getCurrentScore(): Int {
+        return currentScore
+    }
+
+    fun getHighScore(): Int {
+        return highScore
     }
 
     fun newRound() : Boolean{
@@ -28,14 +50,6 @@ class SimonModel {
 
     fun getDuration(): Long {
         return totalDuration
-    }
-
-    private fun addAnswer() {
-        totalListOfAnswers.add(Random.nextInt(0,4))
-    }
-
-    fun getNextAnswer() {
-
     }
 
     fun checkAnswer(guess: Int): Boolean {
@@ -54,7 +68,7 @@ class SimonModel {
 
         else {
             Log.e("TAG","Correct answer")
-            //incrementScore()
+            incrementScore()
             advanceUserPosition()
             return true
         }
@@ -68,7 +82,6 @@ class SimonModel {
     }
 
     private fun advanceUserPosition() {
-        //userPosition = (userPosition + 1) % totalListOfAnswers.count()
         userPosition = userPosition + 1
     }
 

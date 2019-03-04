@@ -4,12 +4,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.view.isVisible
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.simon_layout.*
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
     val simonModel = SimonModel()
+
+    private fun disableRadioMenu() {
+        getDifficulty()
+
+        easyRadioButton.isClickable = false
+        normalRadioButton.isClickable = false
+        hardRadioButton.isClickable = false
+
+        easyRadioButton.isVisible = false
+        normalRadioButton.isVisible = false
+        hardRadioButton.isVisible = false
+    }
 
     private fun disableButtonClicks() {
         //startButton.isClickable = false
@@ -29,10 +43,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun disableStartButton() {
         startButton.isClickable = false
+        startButton.isVisible = false
     }
 
     private fun enableStartButton() {
         startButton.isClickable = true
+        startButton.isVisible = true
     }
 
     //Use this to attach the SimonModelFragment to the activity
@@ -74,10 +90,12 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
+
         //viewFragment?.listener = this
         viewFragment?.listener = object : SimonViewFragment.SimonListener {
             override fun startButtonPressed() {
                 Log.e("TAG", "Delegated from the View to the Controller")
+                disableRadioMenu()
                 disableStartButton()
                 disableButtonClicks()
                 modelFragment?.startSequence(simonModel.getDuration())
@@ -109,6 +127,10 @@ class MainActivity : AppCompatActivity() {
                 simonModel.setCurrentDuration(time)
             }
 
+            override fun updateScoreText() {
+                resources.getString(R.string.score_text, simonModel.getCurrentScore())
+            }
+
         }
         modelFragment?.listener = modelListener
     }
@@ -130,6 +152,7 @@ class MainActivity : AppCompatActivity() {
 
         if ( simonModel.checkAnswer(guess) ) {
             Toast.makeText( this@MainActivity, "Correct", Toast.LENGTH_SHORT).show()
+            viewFragment?.listener?.updateScoreText()
         }
 
         if ( simonModel.newRound() ){
@@ -139,6 +162,18 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Press Start", Toast.LENGTH_LONG).show()
         }
 
+    }
+
+    private fun getDifficulty() {
+        if(easyRadioButton.isChecked){
+            simonModel.setDifficulty(1)
+        }
+        if(normalRadioButton.isChecked) {
+            simonModel.setDifficulty(2)
+        }
+        if(hardRadioButton.isChecked) {
+            simonModel.setDifficulty(3)
+        }
     }
 
     /*
