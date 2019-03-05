@@ -9,10 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationSet
-import androidx.core.animation.addListener
-import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.simon_layout.*
@@ -116,39 +112,3 @@ class SimonViewFragment: Fragment() {
         set.start()
     }
 }
-
-//References to old code go here...for now
-
-//        activity?.let { activity ->
-//            for (index in 0 until answers.size) {
-//                val view = when(answers[index]) {
-//                    0 -> greenButton
-//                    1 -> redButton
-//                    2 -> yellowButton
-//                    else -> blueButton
-//                }
-//
-//                val originalColor = view.background as? ColorDrawable
-//                val flash = ContextCompat.getColor(activity, R.color.flashColor)
-//
-//                val animator = ValueAnimator.ofObject(
-//                    ArgbEvaluator(),
-//                    originalColor?.color,
-//                    flash,
-//                    originalColor?.color
-//                )
-//
-//                animator.addUpdateListener { valueAnimator ->
-//                    (valueAnimator.animatedValue as? Int)?.let {
-//                        view.setBackgroundColor(it)
-//                    }
-//                }
-//                animator.startDelay = (index * 1000).toLong()
-//                animator?.start()
-//                println(answers[index])
-//            }
-//        }
-//                val red = ContextCompat.getColor(activity, R.color.redColor)
-//                val green = ContextCompat.getColor(activity, R.color.greenColor)
-//                val blue = ContextCompat.getColor(activity, R.color.blueColor)
-//                val yellow = ContextCompat.getColor(activity, R.color.yellowColor)

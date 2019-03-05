@@ -12,9 +12,17 @@ class SimonModel {
     private var highScore = 0
     private var totalDuration: Long = 0
     private var difficulty = 0
+    private var easyLength = 20000
+    private var normalLength = 10000
+    private var hardLength = 50000
 
     fun setDifficulty(diffLevel: Int){
         difficulty = diffLevel
+    }
+
+    fun restartGame() {
+        totalListOfAnswers.clear()
+        currentScore = 0
     }
 
     private fun addAnswer() {
@@ -23,6 +31,7 @@ class SimonModel {
             index++
             totalListOfAnswers.add(Random.nextInt(0, 4))
         }
+        //totalListOfAnswers.add(Random.nextInt(0,4))
     }
 
     private fun incrementScore() {
@@ -54,11 +63,15 @@ class SimonModel {
 
     fun checkAnswer(guess: Int): Boolean {
 
-//        if (userPosition > totalListOfAnswers.count()) {
-//            Log.e("TAG","Out of bounds")
-//            userPosition = 0
-//            return false
-//        }
+        if (totalListOfAnswers.count() == 0) {
+            return false
+        }
+
+        if (userPosition > totalListOfAnswers.count()) {
+            Log.e("TAG","Out of bounds")
+            userPosition = 0
+            return false
+        }
 
         if( totalListOfAnswers[userPosition] != guess ) { //Lose condition
             Log.e("TAG","Incorrect answer")
@@ -86,9 +99,3 @@ class SimonModel {
     }
 
 }
-//fun getNextAnswer(): Int{
-//        if(answerPosition == totalListOfAnswers.count()){
-//            return -1
-//        }
-//        return answerPosition
-//    }

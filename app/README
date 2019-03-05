@@ -1,0 +1,28 @@
+Testing Notes
+    There is currently no way to win.
+    Reloading my viewFragment after losing causes issues.
+        I think this is due to the way I swap Fragments
+        The Fragment lifecycle is... strange
+    Difficulty increases the number of flashes each "round"
+
+ Animation Notes
+    I placed the animators into an AnimatorSet
+    I did this to get the total duration of the animations
+        I think this breaks storing information in the Activity/Fragment requirement
+        I really just wanted to see if this could work at all
+    There is no change in animation speed with difficulty changes
+        I wanted to do this without further breaking the no storing data in Fragments rule
+        It seems ViewModel is the way to go about it
+    The protection of turning the color buttons off while the animation plays is removed when starting again
+
+  Resource/Source Notes
+    I followed your Flashy example lectures when doing the animation.
+
+  Questions
+    What is the "safe" way to swap fragments?
+    I have tried:
+        .popBackStack()
+        .replace()
+        .saveInstanceState()
+     And I cant seem to get the viewFragment to behave the same
+

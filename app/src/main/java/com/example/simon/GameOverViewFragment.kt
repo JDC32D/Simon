@@ -12,6 +12,7 @@ class GameOverViewFragment: Fragment() {
 
     interface GameOverListener{
         fun restartButtonPressed()
+        fun exitButtonPressed()
     }
     var listener: GameOverListener? = null
 
@@ -23,7 +24,9 @@ class GameOverViewFragment: Fragment() {
             listener?.restartButtonPressed()
         }
 
-
+        view.exitButton.setOnClickListener {
+            listener?.exitButtonPressed()
+        }
         return view
     }
 

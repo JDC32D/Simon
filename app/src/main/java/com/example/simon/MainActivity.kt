@@ -5,51 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.simon_layout.*
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
     val simonModel = SimonModel()
+    val simonViewModel = SimonViewModel()
 
-    private fun disableRadioMenu() {
-        getDifficulty()
-
-        easyRadioButton.isClickable = false
-        normalRadioButton.isClickable = false
-        hardRadioButton.isClickable = false
-
-        easyRadioButton.isVisible = false
-        normalRadioButton.isVisible = false
-        hardRadioButton.isVisible = false
-    }
-
-    private fun disableButtonClicks() {
-        //startButton.isClickable = false
-        redButton.isClickable = false
-        greenButton.isClickable = false
-        yellowButton.isClickable = false
-        blueButton.isClickable = false
-    }
-
-    private fun enableButtonClicks() {
-        //startButton.isClickable = true
-        redButton.isClickable = true
-        greenButton.isClickable = true
-        yellowButton.isClickable = true
-        blueButton.isClickable = true
-    }
-
-    private fun disableStartButton() {
-        startButton.isClickable = false
-        startButton.isVisible = false
-    }
-
-    private fun enableStartButton() {
-        startButton.isClickable = true
-        startButton.isVisible = true
-    }
 
     //Use this to attach the SimonModelFragment to the activity
     companion object {
@@ -60,26 +22,10 @@ class MainActivity : AppCompatActivity() {
     private var viewFragment: SimonViewFragment? = null
     private var modelFragment: SimonModelFragment? = null
     private var gameOverFragment: GameOverViewFragment? = null
-    private val transaction = supportFragmentManager.beginTransaction()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        //Game over fragment is not yet commited with transaction
-        gameOverFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as? GameOverViewFragment
-        if (gameOverFragment == null)
-        {
-            gameOverFragment = GameOverViewFragment()
-        }
-
-        gameOverFragment?.listener = object : GameOverViewFragment.GameOverListener {
-
-            override fun restartButtonPressed() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-        }
 
         //Set reference in the XML, so we need to search for it by ID
         viewFragment = supportFragmentManager.findFragmentById(R.id.mainContainer)as? SimonViewFragment
@@ -153,13 +99,82 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun disableRadioMenu() {
+        getDifficulty()
 
-    private fun showGameOverScreen(){
-        transaction.replace(R.id.mainContainer, gameOverFragment!!)
-        transaction.addToBackStack("GameOver")
-        transaction.commit()
+        easyRadioButton.isClickable = false
+        normalRadioButton.isClickable = false
+        hardRadioButton.isClickable = false
+
+        easyRadioButton.isVisible = false
+        normalRadioButton.isVisible = false
+        hardRadioButton.isVisible = false
     }
 
+    fun enableRadioMenu() {
+        easyRadioButton.isClickable = true
+        normalRadioButton.isClickable = true
+        hardRadioButton.isClickable = true
+
+        easyRadioButton.isVisible = true
+        normalRadioButton.isVisible = true
+        hardRadioButton.isVisible = true
+    }
+
+    fun disableButtonClicks() {
+        //startButton.isClickable = false
+        redButton.isClickable = false
+        greenButton.isClickable = false
+        yellowButton.isClickable = false
+        blueButton.isClickable = false
+    }
+
+    fun enableButtonClicks() {
+        //startButton.isClickable = true
+        redButton.isClickable = true
+        greenButton.isClickable = true
+        yellowButton.isClickable = true
+        blueButton.isClickable = true
+    }
+
+    fun disableStartButton() {
+        startButton.isClickable = false
+        startButton.isVisible = false
+    }
+
+    fun enableStartButton() {
+        startButton.isClickable = true
+        startButton.isVisible = true
+    }
+
+
+    private fun showGameOverScreen(){
+        gameOverFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as? GameOverViewFragment
+        if (gameOverFragment == null) {
+            gameOverFragment = GameOverViewFragment()
+            supportFragmentManager.saveFragmentInstanceState(viewFragment)
+            supportFragmentManager.beginTransaction()
+                .remove(viewFragment!!)
+                .add(R.id.mainContainer, gameOverFragment!!)
+                .commit()
+        }
+
+        gameOverFragment?.listener = object : GameOverViewFragment.GameOverListener {
+
+            override fun restartButtonPressed() {
+                supportFragmentManager.beginTransaction()
+                    .remove(gameOverFragment!!)
+                    .add(R.id.mainContainer, viewFragment!!)
+                    .commit()
+                simonModel.restartGame()
+                //Something is wrong with the state of my viewFragment
+            }
+
+            override fun exitButtonPressed() {
+                finish()
+            }
+        }
+    }
 
 
     private val modelListener = object : SimonModelFragment.Listener {
@@ -193,7 +208,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun getDifficulty() {
         if(easyRadioButton.isChecked){
             simonModel.setDifficulty(1)
@@ -206,33 +220,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*
-    CTRL+I brings up a quick way to implement all these
-    I can do this because I am implementing the SimonViewFragment.SimonListener
-     */
-//    override fun startButtonPressed() {
-//        Log.e("TAG", "Delegated from the View to the Controller")
-//        modelFragment?.startSequence()
-//        modelFragment?.stopSequence()
-//    }
-//
-//    override fun greenButtonPressed() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//    }
-//
-//    override fun redButtonPressed() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//    }
-//
-//    override fun yellowButtonPressed() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//    }
-//
-//    override fun blueButtonPressed() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//    }
-
-//    override fun sequenceTriggered() {
-//        Log.e("TAG", "Delegated from the Model to the Controller")
-//    }
 }
